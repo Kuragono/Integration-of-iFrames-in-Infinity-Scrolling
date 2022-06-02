@@ -1,13 +1,11 @@
 //main js code
 
-
 /*-------------------------- constants --------------------------*/
 
 const container = document.querySelector('.container');
 let j, x, y, idNum;
 j = x = y = idNum = 0;
 let sizes = {};
-
 
 /*-------------------------- functions --------------------------*/
 
@@ -81,20 +79,6 @@ function load(numImages = 5){         //loads 5 div elements containing images a
     }
 }
 
-// function limitSize(x,y) {
-//     let maxWidth = 800;
-//     let maxHeight = 450;
-//     console.log(x);
-//     if (parseInt(x.slice(0,-2)) > maxWidth) {
-//         x = maxWidth.toString() + 'px';
-//     };
-//     if (parseInt(y.slice(0,-2)) > maxHeight) {
-//         y = maxHeight.toString() + 'px';
-//     };
-//     let limitedSize = {x,y}
-//     return limitedSize;
-// }
-
  function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
     const response =  load();            
     idNum++;
@@ -103,61 +87,31 @@ function load(numImages = 5){         //loads 5 div elements containing images a
     const iframe = document.createElement('iframe');
     iframe.className = 'framework';
     iframe.id = `dm_iframe_${idNum}`;
-    //iframe.src = 'https://definemedia.de'
     iframe.src = './html/iframe.html';
 
     newIframe = document.querySelectorAll('.element')[rdnIframe];
     newIframe.appendChild(iframe);
  }
 
- function waiting() {
+ function setSize() {                  //gets sizes from iframe and sets them (+ checks for max value)
         iframe = document.getElementById(`dm_iframe_${idNum}`);
-        //console.log(sizes);
         x = sizes.width;
         y = sizes.height;
-        //x = getWidth();
-        //y = getHeight();
 
         let maxWidth = 800;
         let maxHeight = 450;
+
         if (parseInt(x.slice(0,-2)) > maxWidth) {
             x = maxWidth.toString() + 'px';
         };
         if (parseInt(y.slice(0,-2)) > maxHeight) {
             y = maxHeight.toString() + 'px';
         };
-
         console.log(x,y);
+
         iframe.style.width = x;
         iframe.style.height = y;
     }
-
-//     setTimeout(() => {
-//         console.log(x);
-//         console.log(y);
-//         //console.log(sizes);
-//         x = sizes.width;
-//         y = sizes.height;
-//         console.log(x);
-//         console.log(y);
-//         //x = getWidth();
-//         //y = getHeight();
-
-//         let maxWidth = 800;
-//         let maxHeight = 450;
-//         if (parseInt(x.slice(0,-2)) > maxWidth) {
-//             x = maxWidth.toString() + 'px';
-//         };
-//         if (parseInt(y.slice(0,-2)) > maxHeight) {
-//             y = maxHeight.toString() + 'px';
-//         };
-
-//         console.log(x);
-//         console.log(y);
-//         iframe.style.width = x;
-//         iframe.style.height = y;
-//     }, 300)
-// }
 
 /*-------------------------- main code --------------------------*/
 
@@ -166,7 +120,7 @@ iframeLoader();
 window.addEventListener('message', ({data}) => {
     sizes = data;
     console.log(data);
-    waiting();
+    setSize();
 });
 
 window.addEventListener('scroll', () => {
