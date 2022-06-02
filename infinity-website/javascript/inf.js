@@ -1,10 +1,16 @@
-//import { getSize } from './iframe.js';
+//main js code
+
+
+/*-------------------------- constants --------------------------*/
 
 const container = document.querySelector('.container');
 let j = 0;
 let x = 0;
 let y = 0;
 let idNum = 0;
+
+
+/*-------------------------- functions --------------------------*/
 
 const randNum = (a,b) => (Math.floor(Math.random() * a) + b);
 
@@ -50,7 +56,7 @@ function createText() {
     return phrase;
 }
 
-function load(numImages = 5){
+function load(numImages = 5){         //loads 5 div elements containing images and paragraphs after eventlistener has been triggered
     let i = 0;
     while(i < numImages) {
         const div = document.createElement('div');
@@ -75,21 +81,22 @@ function load(numImages = 5){
     }
 }
 
-async function iframeLoader(){
-    const response = await load();
+async function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
+    const response = await load();            //async/await is probably unnecessary
     idNum++;
     let rdnIframe = j - randNum(5,0) - 1;
 
     const iframe = document.createElement('iframe');
     iframe.className = 'framework';
     iframe.id = `dm_iframe_${idNum}`;
-    iframe.src = 'https://definemedia.de'
-    //iframe.src = '../html/iframe.html';
+    //iframe.src = 'https://definemedia.de'
+    iframe.src = '../html/iframe.html';
 
     newIframe = document.querySelectorAll('.element')[rdnIframe];
     newIframe.appendChild(iframe);
 
     let heights = setTimeout(() => {
+        console.log(sizes);
         x = getWidth();
         y = getHeight();
         //console.log(x);
@@ -121,6 +128,8 @@ function getWidth() {
     return iWidth;
 }
 
+/*-------------------------- main code --------------------------*/
+
 iframeLoader();
 
 window.addEventListener('scroll', () => {
@@ -128,3 +137,7 @@ window.addEventListener('scroll', () => {
         iframeLoader();
     }
 })
+
+window.addEventListener('message', ({data}) => {
+    sizes = data;
+});
