@@ -13,6 +13,9 @@ size.style.height = `${getHeight()}px`;
 size.style.width = `${getWidth()}px`;
 size.style.display = 'block';
 
+size.style.overflow = 'hidden';
+size.scrolling = 'no';
+
 /*-------------------------- main code --------------------------*/
 
 let height = size.style.height;

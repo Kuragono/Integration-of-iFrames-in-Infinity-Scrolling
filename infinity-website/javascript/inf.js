@@ -4,10 +4,8 @@
 /*-------------------------- constants --------------------------*/
 
 const container = document.querySelector('.container');
-let j = 0;
-let x = 0;
-let y = 0;
-let idNum = 0;
+let j, x, y, idNum;
+j = x = y = idNum = 0;
 let sizes = {};
 
 
@@ -83,21 +81,22 @@ function load(numImages = 5){         //loads 5 div elements containing images a
     }
 }
 
-function limitSize(x,y) {
-    let maxWidth = 800;
-    let maxHeight = 450;
-    if (parseInt(x.slice(0,-2)) > maxWidth) {
-        x = maxWidth.toString() + 'px';
-    };
-    if (parseInt(y.slice(0,-2)) > maxHeight) {
-        y = maxHeight.toString() + 'px';
-    };
-    let limitedSize = {x,y}
-    return limitedSize;
-}
+// function limitSize(x,y) {
+//     let maxWidth = 800;
+//     let maxHeight = 450;
+//     console.log(x);
+//     if (parseInt(x.slice(0,-2)) > maxWidth) {
+//         x = maxWidth.toString() + 'px';
+//     };
+//     if (parseInt(y.slice(0,-2)) > maxHeight) {
+//         y = maxHeight.toString() + 'px';
+//     };
+//     let limitedSize = {x,y}
+//     return limitedSize;
+// }
 
-async function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
-    const response = await load();            //async/await is probably unnecessary
+ function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
+    const response =  load();            
     idNum++;
     let rdnIframe = j - randNum(5,0) - 1;
 
@@ -109,56 +108,69 @@ async function iframeLoader(){                //loads an iframe in one of the 5 
 
     newIframe = document.querySelectorAll('.element')[rdnIframe];
     newIframe.appendChild(iframe);
+ }
 
-    let heights = setTimeout(() => {
-        console.log(sizes);
+ function waiting() {
+        iframe = document.getElementById(`dm_iframe_${idNum}`);
+        //console.log(sizes);
         x = sizes.width;
         y = sizes.height;
         //x = getWidth();
         //y = getHeight();
-        let newSize = limitSize(x,y);
-        x = newSize.x;
-        y = newSize.y;
 
-        //console.log(x);
-        //console.log(y);
+        let maxWidth = 800;
+        let maxHeight = 450;
+        if (parseInt(x.slice(0,-2)) > maxWidth) {
+            x = maxWidth.toString() + 'px';
+        };
+        if (parseInt(y.slice(0,-2)) > maxHeight) {
+            y = maxHeight.toString() + 'px';
+        };
+
+        console.log(x,y);
         iframe.style.width = x;
         iframe.style.height = y;
-    }, 500)
+    }
 
-    iframe.scrolling = 'no';
-    iframe.style.overflow = 'hidden';
-}
+//     setTimeout(() => {
+//         console.log(x);
+//         console.log(y);
+//         //console.log(sizes);
+//         x = sizes.width;
+//         y = sizes.height;
+//         console.log(x);
+//         console.log(y);
+//         //x = getWidth();
+//         //y = getHeight();
 
-// function getHeight() {
-//     let iHeight = document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.height;
-//     document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.scrollbar = 'no';
-//     let maxHeight = 450;
-//     if (parseInt(iHeight.slice(0,-2)) > maxHeight) {
-//         iHeight = maxHeight.toString() + 'px';
-//     };
-//     return iHeight;
-// }
+//         let maxWidth = 800;
+//         let maxHeight = 450;
+//         if (parseInt(x.slice(0,-2)) > maxWidth) {
+//             x = maxWidth.toString() + 'px';
+//         };
+//         if (parseInt(y.slice(0,-2)) > maxHeight) {
+//             y = maxHeight.toString() + 'px';
+//         };
 
-// function getWidth() {
-//     let iWidth = document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.width;
-//     let maxWidth = 800;
-//     if (parseInt(iWidth.slice(0,-2)) > maxWidth) {
-//         iWidth = maxWidth.toString() + 'px';
-//     };
-//     return iWidth;
+//         console.log(x);
+//         console.log(y);
+//         iframe.style.width = x;
+//         iframe.style.height = y;
+//     }, 300)
 // }
 
 /*-------------------------- main code --------------------------*/
 
 iframeLoader();
 
+window.addEventListener('message', ({data}) => {
+    sizes = data;
+    console.log(data);
+    waiting();
+});
+
 window.addEventListener('scroll', () => {
     if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 200) {
         iframeLoader();
     }
-})
-
-window.addEventListener('message', ({data}) => {
-    sizes = data;
 });
