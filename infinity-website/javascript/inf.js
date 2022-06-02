@@ -8,6 +8,7 @@ let j = 0;
 let x = 0;
 let y = 0;
 let idNum = 0;
+let sizes = {};
 
 
 /*-------------------------- functions --------------------------*/
@@ -66,7 +67,8 @@ function load(numImages = 5){         //loads 5 div elements containing images a
         const img = document.createElement('img');
         img.className = 'car';
         let imageNum = randNum(3,1).toString();
-        img.src = `../images/image_${imageNum}.jpeg`;
+        img.src = `./images/image_${imageNum}.jpeg`;
+        img.alt = 'picture of a car';
         newDivEl = document.querySelectorAll('.element')[j];
         newDivEl.appendChild(img);
 
@@ -81,6 +83,19 @@ function load(numImages = 5){         //loads 5 div elements containing images a
     }
 }
 
+function limitSize(x,y) {
+    let maxWidth = 800;
+    let maxHeight = 450;
+    if (parseInt(x.slice(0,-2)) > maxWidth) {
+        x = maxWidth.toString() + 'px';
+    };
+    if (parseInt(y.slice(0,-2)) > maxHeight) {
+        y = maxHeight.toString() + 'px';
+    };
+    let limitedSize = {x,y}
+    return limitedSize;
+}
+
 async function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
     const response = await load();            //async/await is probably unnecessary
     idNum++;
@@ -90,15 +105,21 @@ async function iframeLoader(){                //loads an iframe in one of the 5 
     iframe.className = 'framework';
     iframe.id = `dm_iframe_${idNum}`;
     //iframe.src = 'https://definemedia.de'
-    iframe.src = '../html/iframe.html';
+    iframe.src = './html/iframe.html';
 
     newIframe = document.querySelectorAll('.element')[rdnIframe];
     newIframe.appendChild(iframe);
 
     let heights = setTimeout(() => {
         console.log(sizes);
-        x = getWidth();
-        y = getHeight();
+        x = sizes.width;
+        y = sizes.height;
+        //x = getWidth();
+        //y = getHeight();
+        let newSize = limitSize(x,y);
+        x = newSize.x;
+        y = newSize.y;
+
         //console.log(x);
         //console.log(y);
         iframe.style.width = x;
@@ -109,24 +130,24 @@ async function iframeLoader(){                //loads an iframe in one of the 5 
     iframe.style.overflow = 'hidden';
 }
 
-function getHeight() {
-    let iHeight = document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.height;
-    document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.scrollbar = 'no';
-    let maxHeight = 450;
-    if (parseInt(iHeight.slice(0,-2)) > maxHeight) {
-        iHeight = maxHeight.toString() + 'px';
-    };
-    return iHeight;
-}
+// function getHeight() {
+//     let iHeight = document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.height;
+//     document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.scrollbar = 'no';
+//     let maxHeight = 450;
+//     if (parseInt(iHeight.slice(0,-2)) > maxHeight) {
+//         iHeight = maxHeight.toString() + 'px';
+//     };
+//     return iHeight;
+// }
 
-function getWidth() {
-    let iWidth = document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.width;
-    let maxWidth = 800;
-    if (parseInt(iWidth.slice(0,-2)) > maxWidth) {
-        iWidth = maxWidth.toString() + 'px';
-    };
-    return iWidth;
-}
+// function getWidth() {
+//     let iWidth = document.getElementById(`dm_iframe_${idNum}`).contentWindow.document.getElementById('size').style.width;
+//     let maxWidth = 800;
+//     if (parseInt(iWidth.slice(0,-2)) > maxWidth) {
+//         iWidth = maxWidth.toString() + 'px';
+//     };
+//     return iWidth;
+// }
 
 /*-------------------------- main code --------------------------*/
 

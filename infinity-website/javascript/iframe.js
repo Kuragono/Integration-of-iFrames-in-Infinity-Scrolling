@@ -15,6 +15,8 @@ size.style.display = 'block';
 
 /*-------------------------- main code --------------------------*/
 
-let sizes = {height, width};
+let height = size.style.height;
+let width = size.style.width;
+let sizes = {width, height};
 
 window.parent.postMessage(sizes);
