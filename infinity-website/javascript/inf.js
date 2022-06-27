@@ -79,7 +79,7 @@ function load(numImages = 5){         //loads 5 div elements containing images a
     }
 }
 
- function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
+function iframeLoader(){                //loads an iframe in one of the 5 newly created div elements
     const response =  load();            
     idNum++;
     let rdnIframe = j - randNum(5,0) - 1;
@@ -93,34 +93,14 @@ function load(numImages = 5){         //loads 5 div elements containing images a
     newIframe.appendChild(iframe);
  }
 
- function setSize() {                  //gets sizes from iframe and sets them (+ checks for max value)
-        iframe = document.getElementById(`dm_iframe_${idNum}`);
-        x = sizes.width;
-        y = sizes.height;
-
-        let maxWidth = 800;
-        let maxHeight = 450;
-
-        if (parseInt(x.slice(0,-2)) > maxWidth) {
-            x = maxWidth.toString() + 'px';
-        };
-        if (parseInt(y.slice(0,-2)) > maxHeight) {
-            y = maxHeight.toString() + 'px';
-        };
-        console.log(x,y);
-
-        iframe.style.width = x;
-        iframe.style.height = y;
-    }
-
 /*-------------------------- main code --------------------------*/
 
 iframeLoader();
 
 window.addEventListener('message', ({data}) => {
-    sizes = data;
     console.log(data);
-    setSize();
+    document.getElementById(`dm_iframe_${idNum}`).style.height = `${data[1]}` + 'px';
+    document.getElementById(`dm_iframe_${idNum}`).style.width = `${data[0]}`;
 });
 
 window.addEventListener('scroll', () => {
