@@ -1,5 +1,8 @@
 # integration-of-iframes-in-infinity-scrolling
-# Edit: 08.06.2022
+
+
+/**** Edit: 08.06.2022 ****/
+
 The goal was to create an infinitely long website, in which we can inject an iframe.
 
 These were the steps followed in the creation of this project:
@@ -20,5 +23,6 @@ Finally the program was almost working fine, but one problem was remaining, some
 8) Optimize code to run efficiently.
 9) Clean and shorten the code.
 
-Edit: 27.06.2022
+/**** Edit: 27.06.2022 ****/
+
 10) Replaced setSize() with resizeObserver() which adds responsive changes when the DOM is changed.
